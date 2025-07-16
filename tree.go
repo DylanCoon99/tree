@@ -1,23 +1,163 @@
 package tree 
 
 
+import (
+	"fmt"
+	"errors"
+	"math"
+)
+
+
+/*
+	Tree Functionality:
+
+	Add (Insert) while preserving properties of BST
+
+	Remove (Delete) while preserving properties of BST
+
+	Print (Display) different traversals (do some of them recursively )
+		- Inorder
+		- Preorder
+		- Postorder
+		- Level-order
+
+	Additional Supporting Functionality
+		- Search: Find a node with given value to support add/remove operations
+		- Size: return number of nodes in the tree
+		- Height/Depth: returns the max depth of the tree
+
+
+*/
+
+
+
+
 type Node struct {
 	Value  int
 	Right  *Node
 	Left   *Node
 }
 
-type Tree struct {
+
+type BinarySearchTree struct {
 	Root *Node
 }
 
 
+func InitTree() *BinarySearchTree {
 
-
-func InitTree() *Tree {
-
-	return &Tree{
+	return &BinarySearchTree{
 		Root: nil,
 	}
 
 }
+
+
+
+func getHeight(node *Node) int {
+
+	if node == nil {
+		return 0
+	}
+
+	return 1 + max(getHeight(node.Left), getHeight(node.Right))
+
+}
+
+
+func (t *BinarySearchTree) PrettyPrint() {
+    if t.Root == nil {
+        fmt.Println("Empty tree")
+        return
+    }
+
+    // Get tree height for buffer sizing
+    height := getHeight(t.Root)
+    // Width needed: for each node at max depth, we need space for value and padding
+    width := int(math.Pow(2, float64(height))) * 4
+
+    // Create a 2D buffer to store the output
+    lines := make([][]rune, height*2-1) // Each node level + connector level
+    for i := range lines {
+        lines[i] = make([]rune, width)
+        for j := range lines[i] {
+            lines[i][j] = ' '
+        }
+    }
+
+    // Fill the buffer with nodes and connectors
+    placeNode(t.Root, 0, width/2, width/4, lines)
+
+    // Print the buffer
+    for _, line := range lines {
+        fmt.Println(string(line))
+    }
+}
+// placeNode places a node and its connectors in the buffer
+func placeNode(node *Node, row int, col int, offset int, lines [][]rune) {
+    if node == nil {
+        return
+    }
+
+    // Place node value (centered)
+    valueStr := fmt.Sprintf("%d", node.Value)
+    for i, ch := range valueStr {
+        lines[row][col-len(valueStr)/2+i] = ch
+    }
+
+    // Place connectors and children
+    if node.Left != nil || node.Right != nil {
+        // Place connectors (/)
+        if node.Left != nil {
+            lines[row+1][col-offset/2] = '/'
+        }
+        // Place connectors (\)
+        if node.Right != nil {
+            lines[row+1][col+offset/2] = '\\'
+        }
+        // Recursively place left and right children
+        placeNode(node.Left, row+2, col-offset, offset/2, lines)
+        placeNode(node.Right, row+2, col+offset, offset/2, lines)
+    }
+}
+
+
+func (t *BinarySearchTree) Insert(val int) error {
+
+	// inserts a value while preserving BST balance
+
+
+	cur := t.Root
+
+
+	node := &Node{
+		Value: val,
+		Right: nil,
+		Left: nil,
+	}
+
+
+	for {
+		if val > cur.Value {
+			// insert to the right subtree
+			if cur.Right == nil {
+				cur.Right = node
+				return nil
+			}
+			cur = cur.Right
+		} else if val < cur.Value {
+			if cur.Left == nil {
+				cur.Left = node
+				return nil
+			}
+			cur = cur.Left
+		} else {
+			return errors.New("Value is already in tree.")
+		}
+	}
+
+
+
+}
+
+
