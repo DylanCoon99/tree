@@ -136,6 +136,11 @@ func (t *BinarySearchTree) Insert(val int) error {
 		Left: nil,
 	}
 
+	if t.Root == nil {
+		t.Root = node
+		return nil
+	}
+
 
 	for {
 		if val > cur.Value {

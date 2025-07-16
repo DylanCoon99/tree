@@ -57,7 +57,7 @@ func TestPrettyPrint(t *testing.T) {
 	}
 
 
-	tree.PrettyPrint()
+	//tree.PrettyPrint()
 
 
 
@@ -69,5 +69,28 @@ func TestPrettyPrint(t *testing.T) {
 func TestInsert(t *testing.T) {
 
 
+	var tree *BinarySearchTree
+
+	tree = InitTree()
+
+
+	tree.Insert(4)
+	tree.Insert(7)
+	tree.Insert(6)
+	tree.Insert(2)
+	tree.Insert(3)
+	tree.Insert(1)
+	tree.Insert(0)
+
+	v := 6
+
+	err := tree.Insert(v)
+
+
+	tree.PrettyPrint()
+
+	if err != nil {
+		t.Errorf("Error inserting value %v into tree: %v", v, err)
+	}
 
 }
