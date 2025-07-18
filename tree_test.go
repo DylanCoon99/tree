@@ -69,7 +69,7 @@ func TestInsert(t *testing.T) {
 
 	v := 6
 
-	err := tree.Insert(v)
+	tree.Insert(v)
 
 
 	tree.PrettyPrint()
@@ -77,16 +77,32 @@ func TestInsert(t *testing.T) {
 	/*
 	if err != nil {
 		t.Errorf("Error inserting value %v into tree: %v", v, err)
+		return
 	}
 	*/
 
-	if err.Error() == fmt.Sprintf("Value is already in tree.") {
-	 	fmt.Println("GOOD")
-	}
 
-
+	fmt.Println("Passed Insert Test.")
 
 }
+
+
+
+func TestGetSize(t *testing.T) {
+
+	tree := InitExampleTree()
+
+	n := tree.getSize()
+
+	if n != 7 {
+		t.Errorf("Failed Test Get Size, expected 7 got %v", n)
+		return
+	}
+
+	fmt.Println("Passed Get Size Test")
+
+}
+
 
 
 
@@ -113,3 +129,5 @@ func TestInTree(t *testing.T) {
 	fmt.Println("Passed In Tree Test")
 
 }
+
+

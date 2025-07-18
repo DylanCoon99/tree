@@ -22,7 +22,7 @@ import (
 		- Level-order 
 
 	Additional Supporting Functionality
-		- Search: Find a node with given value to support add/remove operations
+		- Search: Determine if value is in the tree (Done)
 		- Size: return number of nodes in the tree (Done)
 		- Height/Depth: returns the max depth of the tree (Done)
 
@@ -51,6 +51,13 @@ func InitTree() *BinarySearchTree {
 		Root: nil,
 		Size: 0,
 	}
+
+}
+
+
+func (t *BinarySearchTree) getSize() int {
+
+	return t.Size
 
 }
 
