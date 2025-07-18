@@ -11,20 +11,20 @@ import (
 /*
 	Tree Functionality:
 
-	Add (Insert) while preserving properties of BST
+	Add (Insert) while preserving properties of BST (Done)
 
-	Remove (Delete) while preserving properties of BST
+	Remove (Delete) while preserving properties of BST 
 
 	Print (Display) different traversals (do some of them recursively )
 		- Inorder
 		- Preorder
 		- Postorder
-		- Level-order
+		- Level-order 
 
 	Additional Supporting Functionality
 		- Search: Find a node with given value to support add/remove operations
-		- Size: return number of nodes in the tree
-		- Height/Depth: returns the max depth of the tree
+		- Size: return number of nodes in the tree (Done)
+		- Height/Depth: returns the max depth of the tree (Done)
 
 
 */
@@ -41,6 +41,7 @@ type Node struct {
 
 type BinarySearchTree struct {
 	Root *Node
+	Size int
 }
 
 
@@ -48,6 +49,7 @@ func InitTree() *BinarySearchTree {
 
 	return &BinarySearchTree{
 		Root: nil,
+		Size: 0,
 	}
 
 }
@@ -136,8 +138,11 @@ func (t *BinarySearchTree) Insert(val int) error {
 		Left: nil,
 	}
 
+
+
 	if t.Root == nil {
 		t.Root = node
+		t.Size += 1
 		return nil
 	}
 
@@ -147,12 +152,14 @@ func (t *BinarySearchTree) Insert(val int) error {
 			// insert to the right subtree
 			if cur.Right == nil {
 				cur.Right = node
+				t.Size += 1
 				return nil
 			}
 			cur = cur.Right
 		} else if val < cur.Value {
 			if cur.Left == nil {
 				cur.Left = node
+				t.Size += 1
 				return nil
 			}
 			cur = cur.Left
@@ -165,4 +172,58 @@ func (t *BinarySearchTree) Insert(val int) error {
 
 }
 
+
+
+func (t *BinarySearchTree) InTree(val int) bool {
+
+	// returns if a value is in the tree; The tree is a BST so we can determine by doing a binary search
+
+	cur := t.Root
+
+	for {
+		if cur.Value == val {
+			// we found the value
+			return true
+		} else {
+			if cur.Value > val {
+				cur = cur.Left
+				if cur == nil {
+					return false
+				}
+			} else {
+				cur = cur.Right
+				if cur == nil {
+					return false
+				}
+			}
+		}
+	}
+
+}
+
+
+
+func (t *BinarySearchTree) InorderTraversal() []int {
+
+	// Maybe try creating a helper function with parameter called values []int
+
+
+	return nil
+}
+
+
+
+func (t *BinarySearchTree) PreorderTraversal() []int {
+
+	
+	return nil	
+}
+
+
+
+func (t *BinarySearchTree) PostorderTraversal() []int {
+
+	
+	return nil
+}
 

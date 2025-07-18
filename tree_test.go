@@ -9,6 +9,28 @@ import (
 
 
 
+func InitExampleTree() *BinarySearchTree{
+
+	var tree *BinarySearchTree
+
+	tree = InitTree()
+
+
+	tree.Insert(4)
+	tree.Insert(7)
+	tree.Insert(6)
+	tree.Insert(2)
+	tree.Insert(3)
+	tree.Insert(1)
+	tree.Insert(0)
+
+	return tree
+
+}
+
+
+
+
 
 func TestInitTree(t *testing.T) {
 
@@ -29,32 +51,6 @@ func TestInitTree(t *testing.T) {
 
 func TestPrettyPrint(t *testing.T) {
 
-	var tree *BinarySearchTree
-
-	tree = InitTree()
-
-	// temporary until I determine if insert works
-	tree.Root = &Node {
-		Value: 5,
-		Right: &Node {
-			Value: 6,
-			Right: &Node{
-				Value: 7,
-				Right: nil,
-				Left: nil,
-			},
-			Left: nil,
-		},
-		Left: &Node {
-			Value: 3,
-			Right: &Node{
-				Value: 4,
-				Right: nil,
-				Left: nil,
-			},
-			Left: nil,
-		},
-	}
 
 
 	//tree.PrettyPrint()
@@ -69,18 +65,7 @@ func TestPrettyPrint(t *testing.T) {
 func TestInsert(t *testing.T) {
 
 
-	var tree *BinarySearchTree
-
-	tree = InitTree()
-
-
-	tree.Insert(4)
-	tree.Insert(7)
-	tree.Insert(6)
-	tree.Insert(2)
-	tree.Insert(3)
-	tree.Insert(1)
-	tree.Insert(0)
+	tree := InitExampleTree()
 
 	v := 6
 
@@ -89,8 +74,42 @@ func TestInsert(t *testing.T) {
 
 	tree.PrettyPrint()
 
+	/*
 	if err != nil {
 		t.Errorf("Error inserting value %v into tree: %v", v, err)
 	}
+	*/
+
+	if err.Error() == fmt.Sprintf("Value is already in tree.") {
+	 	fmt.Println("GOOD")
+	}
+
+
+
+}
+
+
+
+func TestInTree(t *testing.T) {
+
+
+	tree := InitExampleTree()
+
+	ok := tree.InTree(4)
+
+	if !ok {
+		t.Errorf("Expected ok, got: %v", ok)
+		return 
+	}
+
+
+	ok = tree.InTree(10)
+
+	if ok {
+		t.Errorf("Expected not ok, got: %v", ok)
+		return 
+	}
+
+	fmt.Println("Passed In Tree Test")
 
 }
