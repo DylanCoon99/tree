@@ -165,7 +165,7 @@ func TestPreorderTraversal(t *testing.T) {
 
 	traversal := tree.PreorderTraversal()
 
-	fmt.Print(traversal)
+	fmt.Println(traversal)
 
 }
 
@@ -177,7 +177,7 @@ func TestPostorderTraversal(t *testing.T) {
 
 	traversal := tree.PostorderTraversal()
 
-	fmt.Print(traversal)
+	fmt.Println(traversal)
 
 }
 

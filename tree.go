@@ -382,8 +382,36 @@ func (t *BinarySearchTree) PostorderTraversal() []int {
 
 	// Do it iteratively
 
+	
+	vals := []int{}
+	stack := []*Node{}
 
+	var lastVisited *Node
 
-	return nil
+	current := t.Root
+
+	for current != nil || len(stack) > 0 {
+
+		// go the furthest left
+		for current != nil {
+			stack = append(stack, current)
+			current = current.Left
+		}
+
+		current = stack[len(stack) - 1]
+
+		// if the right child exists and it hasn't been visited, process it
+		if current.Right != nil && current.Right != lastVisited {
+			current = current.Right
+		} else {
+			vals = append(vals, current.Value)
+			lastVisited = current
+			stack = stack[:len(stack) - 1]
+			current = nil
+		}
+
+	}
+
+	return vals
 }
 
