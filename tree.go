@@ -15,14 +15,15 @@ import (
 
 	Remove (Delete) while preserving properties of BST 
 
-	Print (Display) different traversals (do some of them recursively )
-		- Inorder
-		- Preorder
-		- Postorder
+	Print (Display) different traversals (do some of them recursively; some iteratively)
+		- DFS
+			- Inorder
+			- Preorder
+			- Postorder
 		- Level-order 
 
 	Additional Supporting Functionality
-		- Search: Determine if value is in the tree (Done)
+		- Search: Determine if value is in the tree and return node (Done)
 		- Size: return number of nodes in the tree (Done)
 		- Height/Depth: returns the max depth of the tree (Done)
 
@@ -181,26 +182,27 @@ func (t *BinarySearchTree) Insert(val int) error {
 
 
 
-func (t *BinarySearchTree) InTree(val int) bool {
+func (t *BinarySearchTree) InTree(val int) *Node {
 
-	// returns if a value is in the tree; The tree is a BST so we can determine by doing a binary search
+	// returns a ptr to the node if it is in the tree; nil otherewise
+	//The tree is a BST so we can determine by doing a binary search
 
 	cur := t.Root
 
 	for {
 		if cur.Value == val {
 			// we found the value
-			return true
+			return cur
 		} else {
 			if cur.Value > val {
 				cur = cur.Left
 				if cur == nil {
-					return false
+					return nil
 				}
 			} else {
 				cur = cur.Right
 				if cur == nil {
-					return false
+					return nil
 				}
 			}
 		}
@@ -210,27 +212,178 @@ func (t *BinarySearchTree) InTree(val int) bool {
 
 
 
-func (t *BinarySearchTree) InorderTraversal() []int {
+func findSuccessor(node *Node) *Node{
+	// find the next biggest node in the right subtree
 
-	// Maybe try creating a helper function with parameter called values []int
+
+	cur := node.Right
+
+
+	for cur != nil && cur.Left != nil {
+		cur = cur.Left
+	}
+
+	return cur
+
+}
+
+
+
+
+
+
+func (t *BinarySearchTree) Delete(val int) error {
+
+	node := t.InTree(val)
+
+	if node == nil {
+		return errors.New("Error: Value not in tree.")
+	}
+
+
+	if node.Right == nil && node.Left == nil {
+		// node is a leaf; easier delete
+
+
+		return nil
+	}
+
+
+	// if the node has two children we have to find the inorder successor or predecessor of the node
+
+	// if the node has one child tree, find the inorder node from that sub tree
+
 
 
 	return nil
+
+
+}
+
+
+func InorderTraversalHelper(node *Node, vals *[]int) {
+
+	// base case
+	if node == nil {
+		return
+	}
+
+	InorderTraversalHelper(node.Left, vals)
+	*vals = append(*vals, node.Value)
+	InorderTraversalHelper(node.Right, vals)
+
+	return
+}
+
+
+
+func (t *BinarySearchTree) InorderTraversalRecursive() []int {
+
+	// Maybe try creating a helper function with parameter called values []int
+
+	vals := []int{}
+
+	InorderTraversalHelper(t.Root, &vals)
+
+	return vals
+}
+
+
+
+func (t *BinarySearchTree) InorderTraversalIterative() []int {
+
+	// Maybe try creating a helper function with parameter called values []int
+
+	// use a stack to track nodes while traversing as far left as possible
+
+	// pop a node, process (append) its value to the vals, then move to its right subtree
+
+	// repeat until stack is empty and no more nodes remain
+
+	if t.Root == nil {
+		return []int{}
+	}
+
+
+	vals := []int{}
+
+	current := t.Root
+
+	stack := []*Node{}
+
+	for current != nil || len(stack) > 0 {
+
+		// use a stack to track nodes while traversing as far left as possible
+		for current != nil {
+			stack = append(stack, current)
+			current = current.Left
+		}
+
+		// pop a node
+		current = stack[len(stack) - 1]
+		stack = stack[:len(stack) - 1]
+
+		// append the node value to the vals
+		vals = append(vals, current.Value)
+
+		current = current.Right
+
+	}
+
+	return vals
 }
 
 
 
 func (t *BinarySearchTree) PreorderTraversal() []int {
 
+	// Visits Root -> Left -> Right
+
+
+	if t.Root == nil {
+		return []int{}
+	}
+
+
+	vals := []int{}
+
+	stack := []*Node{t.Root}
+
+	for len(stack) > 0 {
+
+		// visit root
+		current := stack[len(stack) - 1]
+		stack = stack[:len(stack) - 1]
+
+		vals = append(vals, current.Value)
+
+		// push right node to stack so it is processed after left
+		if current.Right != nil {
+			stack = append(stack, current.Right)
+		}
+
+		// push left node to stack so it is processed first
+		if current.Left != nil {
+			stack = append(stack, current.Left)
+		}
+
+	}
 	
-	return nil	
+	return vals
 }
 
 
 
 func (t *BinarySearchTree) PostorderTraversal() []int {
 
-	
+	// Visits in order Left -> Right -> Root
+
+	// Traverse Left Subtree, the Right Subtree, and then the Root
+
+	// Do it iteratively
+
+
+
 	return nil
 }
 

@@ -111,23 +111,76 @@ func TestInTree(t *testing.T) {
 
 	tree := InitExampleTree()
 
-	ok := tree.InTree(4)
+	node := tree.InTree(2)
 
-	if !ok {
-		t.Errorf("Expected ok, got: %v", ok)
-		return 
+	if node == nil {
+		t.Errorf("Test InTree failed; expected node got: %v", node)
+		return
 	}
 
 
-	ok = tree.InTree(10)
+	//fmt.Printf("Here is the right and left nodes for %v.    RIGHT: %v    LEFT: %v", node, node.Right, node.Left)
 
-	if ok {
-		t.Errorf("Expected not ok, got: %v", ok)
+
+	node = tree.InTree(10)
+
+	if node != nil {
+		t.Errorf("Expected nil, got: %v", node)
 		return 
 	}
 
 	fmt.Println("Passed In Tree Test")
 
 }
+
+
+
+
+func TestInorderTraversalRecursive(t *testing.T) {
+
+	tree := InitExampleTree()
+
+	traversal := tree.InorderTraversalRecursive()
+
+	fmt.Println(traversal)
+
+}
+
+
+func TestInorderTraversalIterative(t *testing.T) {
+
+	tree := InitExampleTree()
+
+	traversal := tree.InorderTraversalIterative()
+
+	fmt.Println(traversal)
+
+}
+
+
+
+func TestPreorderTraversal(t *testing.T) {
+
+	tree := InitExampleTree()
+
+	traversal := tree.PreorderTraversal()
+
+	fmt.Print(traversal)
+
+}
+
+
+
+func TestPostorderTraversal(t *testing.T) {
+
+	tree := InitExampleTree()
+
+	traversal := tree.PostorderTraversal()
+
+	fmt.Print(traversal)
+
+}
+
+
 
 
